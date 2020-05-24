@@ -5,14 +5,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_choise_card.*
 import kotlinx.android.synthetic.main.activity_select_card.*
 
 class ChoiseCardActivity : AppCompatActivity(), View.OnClickListener {
 
-    lateinit var selectedItemPosition :IntArray
+    lateinit var selectedItemPosition :MutableList<Int>
     var selectedItemCount :Int = 0
-//    var cardAllCount :Int = getString(R.string.CardAllCount).toString().toInt()
+    var NameTitle = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +21,8 @@ class ChoiseCardActivity : AppCompatActivity(), View.OnClickListener {
 
         // todo 1.intentの受領
         val bundle = intent.extras
-        selectedItemPosition = bundle!!.getIntArray("selectedItemPosition")!!
+
+        selectedItemPosition = bundle?.getIntArray("selectedItemPosition")!!.toMutableList()
         selectedItemCount = selectedItemPosition.count()
 
         // todo 2.画像表示
@@ -372,29 +374,59 @@ class ChoiseCardActivity : AppCompatActivity(), View.OnClickListener {
 
         when(v?.id){
             R.id.imageButton1 ->{
-                intent.putExtra("NameTitle",textViewCardTitle1.text.toString())
-                startActivity(intent)
-                finish()
+                if (passedimagebutton1 == 1){
+                    Toast.makeText(this,"力尽きている",Toast.LENGTH_SHORT).show()
+                }else {
+                    intent.putExtra("NameTitle", textViewCardTitle1.text.toString())
+                    passedimagebutton1 = 1
+                    roleNumber = roleNumber + 1
+                    startActivity(intent)
+//                    finish()
+                }
             }
             R.id.imageButton2 ->{
-                intent.putExtra("NameTitle",textViewCardTitle2.text.toString())
-                startActivity(intent)
-                finish()
+                if (passedimagebutton2 == 1){
+                    Toast.makeText(this,"力尽きている",Toast.LENGTH_SHORT).show()
+                }else {
+                    intent.putExtra("NameTitle", textViewCardTitle2.text.toString())
+                    passedimagebutton2 = 1
+                    roleNumber = roleNumber + 1
+                    startActivity(intent)
+//                finish()
+                }
             }
             R.id.imageButton3 ->{
-                intent.putExtra("NameTitle",textViewCardTitle3.text.toString())
-                startActivity(intent)
-                finish()
+                if (passedimagebutton3 == 1){
+                    Toast.makeText(this,"力尽きている",Toast.LENGTH_SHORT).show()
+                }else {
+                    intent.putExtra("NameTitle", textViewCardTitle3.text.toString())
+                    passedimagebutton3 = 1
+                    roleNumber = roleNumber + 1
+                    startActivity(intent)
+//                finish()
+                }
             }
             R.id.imageButton4 ->{
-                intent.putExtra("NameTitle",textViewCardTitle4.text.toString())
-                startActivity(intent)
-                finish()
+                if (passedimagebutton4 == 1){
+                    Toast.makeText(this,"力尽きている",Toast.LENGTH_SHORT).show()
+                }else {
+                    intent.putExtra("NameTitle", textViewCardTitle4.text.toString())
+                    passedimagebutton4 = 1
+                    roleNumber = roleNumber + 1
+                    startActivity(intent)
+//                finish()
+                }
             }
             R.id.imageButton5 ->{
-                intent.putExtra("NameTitle",textViewCardTitle5.text.toString())
-                startActivity(intent)
-                finish()
+                if (passedimagebutton5 == 1){
+                    Toast.makeText(this,"力尽きている",Toast.LENGTH_SHORT).show()
+                }else {
+                    intent.putExtra("NameTitle", textViewCardTitle5.text.toString())
+                    passedimagebutton5 = 1
+                    roleNumber = roleNumber + 1
+                    startActivity(intent)
+//                finish()
+                }
             }
         }
     }

@@ -65,11 +65,28 @@ class SelectCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
         buttonNext.setOnClickListener {
             // 選択したItemPositionの取得
             val checked :SparseBooleanArray = listView.checkedItemPositions
-            for (i in 0 .. maxListCount - 1){
-                if (checked.get(i)){
+            for (i in 0 .. 4){
+//                if (checked.get(i)){
                     selectedItemPosition.add(checked.keyAt(i))
-                }
+//                }
             }
+
+//            var item0 = checked.keyAt(0)
+//            var item1 = checked.keyAt(1)
+//            var item2 = checked.keyAt(2)
+//            var item3 = checked.keyAt(3)
+//            var item4 = checked.keyAt(4)
+//
+//            var itemA0 = checked.get(0)
+//            var itemA1 = checked.get(1)
+//            var itemA2 = checked.get(2)
+//            var itemA3 = checked.get(3)
+//            var itemA4 = checked.get(4)
+//
+//            var ItemPositon = selectedItemPosition.toIntArray()
+//
+//            var positon0 = ItemPositon[0]
+//            var positon1 = ItemPositon[1]
 
             //  selectedItemPosition = mutableListOf(checked.keyAt(i))
 

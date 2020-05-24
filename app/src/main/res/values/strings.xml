@@ -18,9 +18,19 @@
 
     // intent用項目
     <string name="selectedItemPosition">selectedItemPosition</string>
+    <string name="arriveMemberCount">arriveMemberCount</string>
+    <string name="imagebuttonNumber">imagebuttonnumber</string>
 
     // カード枚数
     <string name="CardAllCount">6</string>
+
+    // バトルメッセージ
+    <string name="actionMSG">　のこうげき</string>
+    <string name="role1">先鋒</string>
+    <string name="role2">次鋒</string>
+    <string name="role3">中堅</string>
+    <string name="role4">副将</string>
+    <string name="role5">大将</string>
 
     // 共通ステータスタイトル
     <string name="NameTitle">名前：</string>
@@ -29,6 +39,10 @@
     <string name="DefenceTitle">防御力</string>
 
     // カードステータス
+    // ボスキャラ
+    <string name="enemyAttackPower">40</string>
+    <string name="enemyHP">300</string>
+
     // 1人目
     <string name="CardName1">マツケン</string>
     <string name="HpStatus1">100</string>
