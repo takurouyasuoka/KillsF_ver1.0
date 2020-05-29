@@ -31,16 +31,16 @@ class BattleActivity : AppCompatActivity() {
                 textViewRole.setText(getString(R.string.role1))
             }
             2 -> {
-                textViewRole.setText((getString(R.string.role2)))
+                textViewRole.setText(getString(R.string.role2))
             }
             3 -> {
-                textViewRole.setText((getString(R.string.role3)))
+                textViewRole.setText(getString(R.string.role3))
             }
             4 -> {
-                textViewRole.setText((getString(R.string.role4)))
+                textViewRole.setText(getString(R.string.role4))
             }
             5 -> {
-                textViewRole.setText((getString(R.string.role5)))
+                textViewRole.setText(getString(R.string.role5))
             }
         }
         roleOwnSetting()
