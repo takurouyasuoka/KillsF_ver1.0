@@ -85,4 +85,11 @@
     <string name="DefenceStatus6">4</string>
     <string name="DefenceTitle6">4</string>
 
+    // 7人目
+    <string name="CardName7">もりぐ</string>
+    <string name="HpStatus7">100</string>
+    <string name="AtackStatus7">4</string>
+    <string name="DefenceStatus7">4</string>
+    <string name="DefenceTitle7">4</string>
+
 </resources>

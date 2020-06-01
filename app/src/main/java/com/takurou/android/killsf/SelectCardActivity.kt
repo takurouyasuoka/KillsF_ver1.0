@@ -48,6 +48,9 @@ class SelectCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
         Card_List.add(getString(R.string.CardName6) + "　" + getString(R.string.HpTitle) + getString(R.string.HpStatus6)
                 + "　" + getString(R.string.AtackTitle) + getString(R.string.AtackStatus6)
                 + "　" + getString(R.string.DefenceTitle) + getString(R.string.DefenceStatus6))
+//        Card_List.add(getString(R.string.CardName7) + "　" + getString(R.string.HpTitle) + getString(R.string.HpStatus7)
+//                + "　" + getString(R.string.AtackTitle) + getString(R.string.AtackStatus7)
+//                + "　" + getString(R.string.DefenceTitle) + getString(R.string.DefenceStatus7))
 
         // ListViewへの表示
         val adapter =ArrayAdapter<String>(this,android.R.layout.simple_list_item_multiple_choice,Card_List)

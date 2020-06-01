@@ -1,6 +1,10 @@
 package com.takurou.android.killsf
 
 import android.content.Intent
+import android.media.AudioAttributes
+import android.media.AudioManager
+import android.media.SoundPool
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_battle.*
@@ -18,12 +22,25 @@ class BattleActivity : AppCompatActivity() {
     var actionMSG = ""
     var randomNumber = 0
 
+    // 効果音
+    lateinit var soundPool : SoundPool
+
+//    var intSoundId_BattleStart:Int = 0
+    var intSoundId_Attack:Int = 0
+    var intSoundId_Recommend:Int = 0
+    var intSoundId_Mistake:Int = 0
+    var intSoundId_Win:Int = 0
+    var intSoundId_Lose:Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_battle)
 
         val bundle :Bundle? = intent.extras
         NameTitle = bundle?.getString("NameTitle")
+        actionMSG = "ＢＡＴＴＬＥ　ＳＴＡＲＴ！"
+        textViewBattleMsg.setText(actionMSG)
+//        soundPool.play(intSoundId_BattleStart,1.0f,1.0f,0,0,1.0f)
 
         // 役割の設定
         when(roleNumber){
@@ -55,6 +72,7 @@ class BattleActivity : AppCompatActivity() {
             //  攻撃メッセージの編集
             actionMSG = NameTitle + getString(R.string.actionMSG)
             textViewBattleMsg.setText(actionMSG)
+            soundPool.play(intSoundId_Attack,1.0f,1.0f,0,0,1.0f)
             //  少し時間空けて攻撃結果を反映
             randomNumber = Random().nextInt(10)
             if (randomNumber < 3){
@@ -71,12 +89,33 @@ class BattleActivity : AppCompatActivity() {
         super.onResume()
         // タイマークラスのインスタンス化
         timer = Timer()
+        // 効果音を出すためのクラス：SoundPoolの準備
+        soundPool = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            SoundPool.Builder().setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .build())
+                .setMaxStreams(1)
+                .build()
+        }else{
+            SoundPool(1, AudioManager.STREAM_MUSIC,0)
+        }
+        // 効果音ファイルをメモリのロード
+//        intSoundId_BattleStart = soundPool.load(this,R.raw.gong_played1,1)
+        intSoundId_Attack = soundPool.load(this,R.raw.sword_drawn1,1)
+        intSoundId_Recommend = soundPool.load(this,R.raw.punch_high1,1)
+        intSoundId_Mistake = soundPool.load(this,R.raw.boyon1,1)
+        intSoundId_Win = soundPool.load(this,R.raw.gong_played2,1)
+        intSoundId_Lose = soundPool.load(this,R.raw.down1,1)
+
     }
 
     override fun onPause() {
         super.onPause()
         // タイマークラスのリリース
         timer.cancel()
+        // 効果音ファイルのリリース
+        soundPool.release()
     }
 
     private fun buttleAttack() {
@@ -89,6 +128,7 @@ class BattleActivity : AppCompatActivity() {
         //  攻撃結果メッセージの編集
         actionMSG = "あいてに" + attackPower.toString() + "のダメージ"
         textViewBattleMsg.setText(actionMSG)
+        soundPool.play(intSoundId_Recommend,1.0f,1.0f,0,0,1.0f)
         if (enemyHP <= 0){
             timer.schedule(2000,{runOnUiThread { GameWin() }})
         }else{
@@ -99,12 +139,14 @@ class BattleActivity : AppCompatActivity() {
     private fun GameWin() {
         actionMSG = "あなたの勝ち"
         textViewBattleMsg.setText(actionMSG)
+        soundPool.play(intSoundId_Win,1.0f,1.0f,0,0,1.0f)
         buttonBattleAtack.isEnabled = false
     }
 
     private fun AttackEnemyMSG(){
         actionMSG = "あいての攻撃"
         textViewBattleMsg.setText(actionMSG)
+        soundPool.play(intSoundId_Attack,1.0f,1.0f,0,0,1.0f)
         timer.schedule(2000,{runOnUiThread { AttackEnemy() }})
     }
 
@@ -121,6 +163,7 @@ class BattleActivity : AppCompatActivity() {
             actionMSG = NameTitle + "は" + enemyAttackPower.toString() + "のダメージ"
             OwnHP.setText(HP.toString())
             textViewBattleMsg.setText(actionMSG)
+            soundPool.play(intSoundId_Recommend,1.0f,1.0f,0,0,1.0f)
             if (HP == 0){
                 timer.schedule(2000,{runOnUiThread { actionLose() }})
             }else{
@@ -133,6 +176,7 @@ class BattleActivity : AppCompatActivity() {
         arriveMemberCount = arriveMemberCount - 1
         actionMSG = NameTitle + "は力尽きた"
         textViewBattleMsg.setText(actionMSG)
+        soundPool.play(intSoundId_Lose,1.0f,1.0f,0,0,1.0f)
 
         if (arriveMemberCount == 0) {
             timer.schedule(2000,{runOnUiThread { GameLose() }})
@@ -161,12 +205,14 @@ class BattleActivity : AppCompatActivity() {
     private fun buttleAttackMiss() {
         actionMSG = NameTitle + "　痛恨のミス"
         textViewBattleMsg.setText(actionMSG)
+        soundPool.play(intSoundId_Mistake,1.0f,1.0f,0,0,1.0f)
         timer.schedule(2000,{runOnUiThread { AttackEnemyMSG() }})
     }
 
     private fun buttleEnemyMiss() {
         actionMSG = "痛恨のミス"
         textViewBattleMsg.setText(actionMSG)
+        soundPool.play(intSoundId_Mistake,1.0f,1.0f,0,0,1.0f)
         timer.schedule(2000,{runOnUiThread { actionClerar() }})
     }
 
@@ -210,5 +256,4 @@ class BattleActivity : AppCompatActivity() {
             }
         }
     }
-
 }
