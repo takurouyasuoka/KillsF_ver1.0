@@ -41,6 +41,7 @@
     // カードステータス
     // ボスキャラ
     <string name="enemyAttackPower">40</string>
+    <string name="enemySpecialPower">80</string>
     <string name="enemyHP">300</string>
 
     // 1人目

@@ -18,9 +18,11 @@ class BattleActivity : AppCompatActivity() {
     lateinit var timer :Timer
     var NameTitle :String? = ""
     var attackPower = 0
+    var defencePower = 0
     var HP = 0
     var actionMSG = ""
     var randomNumber = 0
+    var defenceFlag = 0
 
     // 効果音
     lateinit var soundPool : SoundPool
@@ -60,6 +62,7 @@ class BattleActivity : AppCompatActivity() {
                 textViewRole.setText(getString(R.string.role5))
             }
         }
+        //  自分のカードの設定
         roleOwnSetting()
 
         // あいてカードの設定
@@ -67,7 +70,7 @@ class BattleActivity : AppCompatActivity() {
 
         // 攻撃ボタン押下時
         buttonBattleAtack.setOnClickListener {
-            buttonBattleAtack.isEnabled = false
+            buttonEnabledFalse()
             //  自分の攻撃
             //  攻撃メッセージの編集
             actionMSG = NameTitle + getString(R.string.actionMSG)
@@ -75,14 +78,33 @@ class BattleActivity : AppCompatActivity() {
             soundPool.play(intSoundId_Attack,1.0f,1.0f,0,0,1.0f)
             //  少し時間空けて攻撃結果を反映
             randomNumber = Random().nextInt(10)
-            if (randomNumber < 3){
-                //  攻撃ミス
-                timer.schedule(2000, { runOnUiThread { buttleAttackMiss() } })
-            }else{
-                //  攻撃成功
-                timer.schedule(2000, { runOnUiThread { buttleAttack() } })
+            when(randomNumber){
+                0,1 -> {    //  攻撃ミス
+                    timer.schedule(2000, { runOnUiThread { buttleAttackMiss() } })
+                }
+                else -> {   //  攻撃成功
+                    timer.schedule(2000, { runOnUiThread { buttleAttack() } })
+                }
             }
+//            if (randomNumber < 3){
+//                //  攻撃ミス
+//                timer.schedule(2000, { runOnUiThread { buttleAttackMiss() } })
+//            }else{
+//                //  攻撃成功
+//                timer.schedule(2000, { runOnUiThread { buttleAttack() } })
+//            }
         }
+
+        //  防御ボタン押下時
+        buttonBattleDefence.setOnClickListener {
+            buttonEnabledFalse()
+            defenceFlag = 1
+            //  防御メッセージの編集
+            actionMSG = NameTitle + "は殻にこもった"
+            textViewBattleMsg.setText(actionMSG)
+            timer.schedule(2000,{runOnUiThread { AttackEnemyMSG() }})
+        }
+
     }
 
     override fun onResume() {
@@ -140,7 +162,7 @@ class BattleActivity : AppCompatActivity() {
         actionMSG = "あなたの勝ち"
         textViewBattleMsg.setText(actionMSG)
         soundPool.play(intSoundId_Win,1.0f,1.0f,0,0,1.0f)
-        buttonBattleAtack.isEnabled = false
+        buttonEnabledFalse()
     }
 
     private fun AttackEnemyMSG(){
@@ -152,24 +174,75 @@ class BattleActivity : AppCompatActivity() {
 
     private fun AttackEnemy() {
         randomNumber = Random().nextInt(10)
-        if (randomNumber < 2){
-            buttleEnemyMiss()
-        }else{
-            //  HPから攻撃分を差し引く
-            HP = HP - enemyAttackPower
-            if (HP <= 0){
-                HP = 0
+        when(randomNumber){
+            0,1 -> {    //  攻撃ミス
+                defenceFlag = 0
+               buttleEnemyMiss()
             }
-            actionMSG = NameTitle + "は" + enemyAttackPower.toString() + "のダメージ"
-            OwnHP.setText(HP.toString())
-            textViewBattleMsg.setText(actionMSG)
-            soundPool.play(intSoundId_Recommend,1.0f,1.0f,0,0,1.0f)
-            if (HP == 0){
-                timer.schedule(2000,{runOnUiThread { actionLose() }})
-            }else{
-                timer.schedule(2000,{runOnUiThread { actionClerar()}})
+            2 -> {      //  会心の一撃
+                //  HPから攻撃分を差し引く
+                if (defenceFlag == 0){
+                    HP = HP - enemySpecialPower
+                    actionMSG = NameTitle + "はパ○ハラを受けた　　" + enemySpecialPower.toString() + "のダメージ"
+                }else{
+                    HP = HP + defencePower - enemySpecialPower
+                    actionMSG = NameTitle + "はパ○ハラを受けた　　" + (enemySpecialPower - defencePower).toString() + "のダメージ"
+                }
+                if (HP <= 0){
+                    HP = 0
+                }
+                OwnHP.setText(HP.toString())
+                textViewBattleMsg.setText(actionMSG)
+                soundPool.play(intSoundId_Recommend,1.0f,1.0f,0,0,1.0f)
+                defenceFlag = 0
+                if (HP == 0){
+                    timer.schedule(2000,{runOnUiThread { actionLose() }})
+                }else {
+                    timer.schedule(2000, { runOnUiThread { actionClerar() } })
+                }
+            }
+            else -> {
+                //  HPから攻撃分を差し引く
+                if (defenceFlag == 0){
+                    HP = HP - enemyAttackPower
+                    actionMSG = NameTitle + "は" + enemyAttackPower.toString() + "のダメージ"
+                }else{
+                    HP = HP + defencePower - enemyAttackPower
+                    actionMSG = NameTitle + "は" + (enemyAttackPower - defencePower).toString() + "のダメージ"
+                }
+                if (HP <= 0){
+                    HP = 0
+                }
+                OwnHP.setText(HP.toString())
+                textViewBattleMsg.setText(actionMSG)
+                soundPool.play(intSoundId_Recommend,1.0f,1.0f,0,0,1.0f)
+                defenceFlag = 0
+                if (HP == 0){
+                    timer.schedule(2000,{runOnUiThread { actionLose() }})
+                }else{
+                    timer.schedule(2000,{runOnUiThread { actionClerar()}})
+                }
             }
         }
+
+//        if (randomNumber < 2){
+//            buttleEnemyMiss()
+//        }else{
+//            //  HPから攻撃分を差し引く
+//            HP = HP - enemyAttackPower
+//            if (HP <= 0){
+//                HP = 0
+//            }
+//            actionMSG = NameTitle + "は" + enemyAttackPower.toString() + "のダメージ"
+//            OwnHP.setText(HP.toString())
+//            textViewBattleMsg.setText(actionMSG)
+//            soundPool.play(intSoundId_Recommend,1.0f,1.0f,0,0,1.0f)
+//            if (HP == 0){
+//                timer.schedule(2000,{runOnUiThread { actionLose() }})
+//            }else{
+//                timer.schedule(2000,{runOnUiThread { actionClerar()}})
+//            }
+//        }
     }
 
     private fun actionLose() {
@@ -188,7 +261,7 @@ class BattleActivity : AppCompatActivity() {
     private fun GameLose() {
         actionMSG = "あなたの負け"
         textViewBattleMsg.setText(actionMSG)
-        buttonBattleAtack.isEnabled = false
+        buttonEnabledFalse()
     }
 
     private fun memberChange() {
@@ -199,7 +272,23 @@ class BattleActivity : AppCompatActivity() {
     private fun actionClerar(){
         actionMSG = ""
         textViewBattleMsg.setText(actionMSG)
+        buttonEnabledTrue()
+    }
+
+    private fun buttonEnabledTrue() {
         buttonBattleAtack.isEnabled = true
+        buttonBattleDefence.isEnabled = true
+        buttonBattleChange.isEnabled = true
+        buttonBattleItem.isEnabled = true
+        buttonBattleSpecial.isEnabled = true
+    }
+
+    private fun buttonEnabledFalse() {
+        buttonBattleAtack.isEnabled = false
+        buttonBattleDefence.isEnabled = false
+        buttonBattleChange.isEnabled = false
+        buttonBattleItem.isEnabled = false
+        buttonBattleSpecial.isEnabled = false
     }
 
     private fun buttleAttackMiss() {
@@ -222,36 +311,42 @@ class BattleActivity : AppCompatActivity() {
                 imageViewMyCard.setImageResource(R.drawable.matsuken)
                 OwnHP.setText(getString(R.string.HpStatus1))
                 attackPower = getString(R.string.AtackStatus1).toInt()
+                defencePower = getString(R.string.DefenceStatus1).toInt()
                 HP = getString(R.string.HpStatus1).toInt()
             }
             getString(R.string.CardName2) -> {
                 imageViewMyCard.setImageResource(R.drawable.yuhei)
                 OwnHP.setText(getString(R.string.HpStatus2))
                 attackPower = getString(R.string.AtackStatus2).toInt()
+                defencePower = getString(R.string.DefenceStatus2).toInt()
                 HP = getString(R.string.HpStatus2).toInt()
             }
             getString(R.string.CardName3) -> {
                 imageViewMyCard.setImageResource(R.drawable.yasu)
                 OwnHP.setText(getString(R.string.HpStatus3))
                 attackPower = getString(R.string.AtackStatus3).toInt()
+                defencePower = getString(R.string.DefenceStatus3).toInt()
                 HP = getString(R.string.HpStatus3).toInt()
             }
             getString(R.string.CardName4) -> {
                 imageViewMyCard.setImageResource(R.drawable.zako1)
                 OwnHP.setText(getString(R.string.HpStatus4))
                 attackPower = getString(R.string.AtackStatus4).toInt()
+                defencePower = getString(R.string.DefenceStatus4).toInt()
                 HP = getString(R.string.HpStatus4).toInt()
             }
             getString(R.string.CardName5) -> {
                 imageViewMyCard.setImageResource(R.drawable.zako2)
                 OwnHP.setText(getString(R.string.HpStatus5))
                 attackPower = getString(R.string.AtackStatus5).toInt()
+                defencePower = getString(R.string.DefenceStatus5).toInt()
                 HP = getString(R.string.HpStatus5).toInt()
             }
             getString(R.string.CardName6) -> {
                 imageViewMyCard.setImageResource(R.drawable.zako3)
                 OwnHP.setText(getString(R.string.HpStatus6))
                 attackPower = getString(R.string.AtackStatus6).toInt()
+                defencePower = getString(R.string.DefenceStatus6).toInt()
                 HP = getString(R.string.HpStatus6).toInt()
             }
         }

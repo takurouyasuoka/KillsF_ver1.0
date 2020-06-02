@@ -24,6 +24,7 @@ var passedimagebutton4 = 0
 var passedimagebutton5 = 0
 
 var enemyAttackPower = 0
+var enemySpecialPower = 0
 var enemyHP = 0
 
 var roleNumber = 0
@@ -66,6 +67,7 @@ class MainActivity : AppCompatActivity() {
 
         //  相手のステータス設定
         enemyAttackPower = getString(R.string.enemyAttackPower).toInt()
+        enemySpecialPower = R.string.enemySpecialPower.toInt()
         enemyHP = getString(R.string.enemyHP).toInt()
 
         buttonStart.setOnClickListener {
