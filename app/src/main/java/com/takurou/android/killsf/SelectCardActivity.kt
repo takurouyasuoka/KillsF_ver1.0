@@ -14,10 +14,10 @@ import androidx.core.view.isInvisible
 import androidx.core.view.size
 import kotlinx.android.synthetic.main.activity_select_card.*
 
-class SelectCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
+class SelectCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
+    AdapterView.OnItemLongClickListener {
 
     var listSelectCount = 0
-    var maxListCount = 0
     var selectedSW = 0
     var clicked :Boolean = false
     var selectedItemPosition :MutableList<Int> = mutableListOf()
@@ -56,15 +56,28 @@ class SelectCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
         val adapter =ArrayAdapter<String>(this,android.R.layout.simple_list_item_multiple_choice,Card_List)
         listView.adapter = adapter
 
+//        // SearchViewの初期表示状態を設定
+//        searchView.isIconifiedByDefault = false
+//
+//        // SearchViewにOnQueryChangeListenerを設定
+//        searchView.setOnQueryTextFocusChangeListener(this)
+//
+//        // SearchViewのSubmitボタンを使用不可にする
+//        searchView.isSubmitButtonEnabled = true
+//
+//        // SearchViewに何も入力していない時のテキストを設定
+//        searchView.queryHint = getString(R.string.searchHint)
+
         // 2.ButtonNextを非活性（５枚選択されるまで）
         buttonNext.isEnabled = false
 
-        // todo 3.Listタップ時の処理
-        // todo 3-1.Listタップしたら、対象のリストを選択状態にしタップ数を加算、もう１度タップしたら非選択に戻す
-        maxListCount = listView.count
+        // 3.Listタップ時の処理
         listView.setOnItemClickListener(this)
 
-        // todo 5.ButtonNextクリック時の処理
+        // 4.List長押し時の処理
+        listView.setOnItemLongClickListener(this)
+
+        // 5.ButtonNextクリック時の処理
         buttonNext.setOnClickListener {
             // 選択したItemPositionの取得
             val checked :SparseBooleanArray = listView.checkedItemPositions
@@ -73,25 +86,6 @@ class SelectCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
                     selectedItemPosition.add(checked.keyAt(i))
 //                }
             }
-
-//            var item0 = checked.keyAt(0)
-//            var item1 = checked.keyAt(1)
-//            var item2 = checked.keyAt(2)
-//            var item3 = checked.keyAt(3)
-//            var item4 = checked.keyAt(4)
-//
-//            var itemA0 = checked.get(0)
-//            var itemA1 = checked.get(1)
-//            var itemA2 = checked.get(2)
-//            var itemA3 = checked.get(3)
-//            var itemA4 = checked.get(4)
-//
-//            var ItemPositon = selectedItemPosition.toIntArray()
-//
-//            var positon0 = ItemPositon[0]
-//            var positon1 = ItemPositon[1]
-
-            //  selectedItemPosition = mutableListOf(checked.keyAt(i))
 
             // インテントの受け渡し先の設定
             val intent = Intent(this@SelectCardActivity,ChoiseCardActivity::class.java)
@@ -108,7 +102,7 @@ class SelectCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
         listSelectCount = listView.checkedItemCount
 //        listView.checkedItemPosition
 
-        // todo 3-2.Listの選択状態が５になったら、ButtonNextを活性化
+        // 3-2.Listの選択状態が５になったら、ButtonNextを活性化
         // タップ数のカウント
         if (listSelectCount == 5){
             buttonNext.isEnabled = true
@@ -116,6 +110,22 @@ class SelectCardActivity : AppCompatActivity(), AdapterView.OnItemClickListener 
             buttonNext.isEnabled = false
         }
 
+    }
+
+    override fun onItemLongClick(
+        parent: AdapterView<*>?,
+        view: View?,
+        position: Int,
+        id: Long
+    ): Boolean {
+        // 長押ししたアイテムの取得
+        val longClickItemPosition = position
+        // インテントへ受け渡す情報の設定
+        val intent = Intent(this@SelectCardActivity,CardImageActivity::class.java)
+        intent.putExtra("longClickItemPosition",longClickItemPosition)
+        // インテントの受け渡し
+        startActivity(intent)
+        return true
     }
 }
 

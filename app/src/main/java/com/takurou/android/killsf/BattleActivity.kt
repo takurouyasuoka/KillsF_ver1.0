@@ -3,6 +3,7 @@ package com.takurou.android.killsf
 import android.content.Intent
 import android.media.AudioAttributes
 import android.media.AudioManager
+import android.media.MediaPlayer
 import android.media.SoundPool
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +28,9 @@ class BattleActivity : AppCompatActivity() {
     // 効果音
     lateinit var soundPool : SoundPool
 
+    //  バックミュージック
+    lateinit var battleMusic : MediaPlayer
+
 //    var intSoundId_BattleStart:Int = 0
     var intSoundId_Attack:Int = 0
     var intSoundId_Recommend:Int = 0
@@ -42,7 +46,10 @@ class BattleActivity : AppCompatActivity() {
         NameTitle = bundle?.getString("NameTitle")
         actionMSG = "ＢＡＴＴＬＥ　ＳＴＡＲＴ！"
         textViewBattleMsg.setText(actionMSG)
-//        soundPool.play(intSoundId_BattleStart,1.0f,1.0f,0,0,1.0f)
+
+        //  バックミュージックの再生
+        battleMusic = MediaPlayer.create(this,R.raw.killsf_battle_music)
+        battleMusic.start()
 
         // 役割の設定
         when(roleNumber){
@@ -138,6 +145,8 @@ class BattleActivity : AppCompatActivity() {
         timer.cancel()
         // 効果音ファイルのリリース
         soundPool.release()
+        //  バックミュージックのリリース
+        battleMusic.release()
     }
 
     private fun buttleAttack() {

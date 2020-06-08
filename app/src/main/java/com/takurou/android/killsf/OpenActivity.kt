@@ -13,6 +13,12 @@ class OpenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_open)
 
+        buttonSkip.setOnClickListener {
+            val intent = Intent(this@OpenActivity,MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         Handler(mainLooper).postDelayed({
             val moviePath = Uri.parse("android.resource://" + packageName + "/" + R.raw.killsfopen1)
             videoView.setVideoURI(moviePath)

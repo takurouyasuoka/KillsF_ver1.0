@@ -2,7 +2,7 @@
     <string name="app_name">KillsF</string>
     <string name="textViewTitle">Ｋｉｌｌ’Ｆ</string>
     <string name="buttonStart">Ｓｔａｒｔ</string>
-    <string name="textViewSelectTitle">カードを５枚選択してください</string>
+    <string name="textViewSelectTitle">カードを５枚選択してください（カード情報参照は長押し）</string>
     <string name="ButtonNext">次へ</string>
     <string name="textViewChoiseTitle">カードを１枚選択してください</string>
     <string name="textViewEnemyTitle">あいてカード</string>
@@ -16,10 +16,13 @@
     <string name="buttonBattleItem">アイテム</string>
     <string name="buttonBattleChange">入替</string>
 
+    <string name="searchHint">検索したいカード名を入力</string>
+
     // intent用項目
     <string name="selectedItemPosition">selectedItemPosition</string>
     <string name="arriveMemberCount">arriveMemberCount</string>
     <string name="imagebuttonNumber">imagebuttonnumber</string>
+    <string name="longClickItemPosition">longClickItemPosition</string>
 
     // カード枚数
     <string name="CardAllCount">6</string>
@@ -50,6 +53,7 @@
     <string name="AtackStatus1">30</string>
     <string name="DefenceStatus1">30</string>
     <string name="DefenceTitle1">30</string>
+    <string name="CharaDetail1">おばあちゃんやん！８０歳くらいかと思った！</string>
 
     // 2人目
     <string name="CardName2">ゆーへい</string>
@@ -57,6 +61,7 @@
     <string name="AtackStatus2">20</string>
     <string name="DefenceStatus2">20</string>
     <string name="DefenceTitle2">20</string>
+    <string name="CharaDetail2">雑魚が！やり方がきたねーんだよ！</string>
 
     // 3人目
     <string name="CardName3">やす</string>
@@ -64,6 +69,7 @@
     <string name="AtackStatus3">10</string>
     <string name="DefenceStatus3">10</string>
     <string name="DefenceTitle3">10</string>
+    <string name="CharaDetail3">Ｙａｓｕ＿Ｄｅｖｅｌｏｐｅｒ</string>
 
     // 4人目
     <string name="CardName4">ざこ１</string>
@@ -71,6 +77,7 @@
     <string name="AtackStatus4">5</string>
     <string name="DefenceStatus4">5</string>
     <string name="DefenceTitle4">5</string>
+    <string name="CharaDetail4">ざこ</string>
 
     // 5人目
     <string name="CardName5">ざこ２</string>
@@ -78,6 +85,7 @@
     <string name="AtackStatus5">4</string>
     <string name="DefenceStatus5">4</string>
     <string name="DefenceTitle5">4</string>
+    <string name="CharaDetail5">ざこ</string>
 
     // 6人目
     <string name="CardName6">ざこ３</string>
@@ -85,6 +93,7 @@
     <string name="AtackStatus6">4</string>
     <string name="DefenceStatus6">4</string>
     <string name="DefenceTitle6">4</string>
+    <string name="CharaDetail6">ざこ</string>
 
     // 7人目
     <string name="CardName7">もりぐ</string>
